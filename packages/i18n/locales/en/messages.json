@@ -1,11 +1,11 @@
 {
   "extensionDescription": {
-    "description": "Extension description",
-    "message": "Chrome extension boilerplate developed with Vite, React and Typescript"
+    "description": "Plutio Chrome Extension (unofficial)",
+    "message": "Plutio Chrome Extension (unofficial)"
   },
   "extensionName": {
-    "description": "Extension name",
-    "message": "Chrome extension boilerplate"
+    "description": "Plutio Chrome Extension (unofficial)",
+    "message": "Plutio Chrome Extension (unofficial)"
   },
   "toggleTheme": {
     "message": "Toggle theme"
