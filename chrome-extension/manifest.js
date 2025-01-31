@@ -1,6 +1,8 @@
 import fs from 'node:fs';
 import deepmerge from 'deepmerge';
 
+const ALLOWED_HOSTS = ['https://*.plutio.com/*'];
+
 const packageJson = JSON.parse(fs.readFileSync('../package.json', 'utf8'));
 
 const isFirefox = process.env.__FIREFOX__ === 'true';
@@ -13,7 +15,11 @@ const isFirefox = process.env.__FIREFOX__ === 'true';
  * ```
  */
 function withSidePanel(manifest) {
+  // INFO: Not implemented for now
+  return manifest;
+
   // Firefox does not support sidePanel
+  // eslint-disable-next-line no-unreachable
   if (isFirefox) {
     return manifest;
   }
@@ -39,34 +45,34 @@ const manifest = withSidePanel({
   name: '__MSG_extensionName__',
   version: packageJson.version,
   description: '__MSG_extensionDescription__',
-  host_permissions: ['<all_urls>'],
+  host_permissions: ALLOWED_HOSTS,
   permissions: ['storage', 'scripting', 'tabs', 'notifications'],
   options_page: 'options/index.html',
-  background: {
-    service_worker: 'background.iife.js',
-    type: 'module',
-  },
-  action: {
-    default_popup: 'popup/index.html',
-    default_icon: 'icon-34.png',
-  },
-  chrome_url_overrides: {
-    newtab: 'new-tab/index.html',
-  },
+  // background: {
+  //   service_worker: 'background.iife.js',
+  //   type: 'module',
+  // },
+  // action: {
+  //   default_popup: 'popup/index.html',
+  //   default_icon: 'icon-34.png',
+  // },
+  // chrome_url_overrides: {
+  //   newtab: 'new-tab/index.html',
+  // },
   icons: {
     128: 'icon-128.png',
   },
   content_scripts: [
     {
-      matches: ['http://*/*', 'https://*/*', '<all_urls>'],
+      matches: ALLOWED_HOSTS,
       js: ['content/index.iife.js'],
     },
     {
-      matches: ['http://*/*', 'https://*/*', '<all_urls>'],
+      matches: ALLOWED_HOSTS,
       js: ['content-ui/index.iife.js'],
     },
     {
-      matches: ['http://*/*', 'https://*/*', '<all_urls>'],
+      matches: ALLOWED_HOSTS,
       css: ['content.css'], // public folder
     },
   ],
