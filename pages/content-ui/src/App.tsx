@@ -1,12 +1,24 @@
 import { useEffect, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
-import { downloadPdfs } from './download-pdfs';
-import { getInvoiceDownloadUrls } from './get-invoice-download-urls';
+import { downloadPdfs } from './utils/download-pdfs';
+import { createUrlChangeListener } from './utils/create-url-change-listener';
+import { getDownloadUrls } from './utils/get-download-urls';
+
+const ALLOWED_DOWNLOAD_PATHNAMES = ['/financials/invoices', '/proposals', '/contracts'];
 
 export default function App() {
   const timeoutRef = useRef<number | null>(null);
+  const pathnameRef = useRef<string>('');
+  const isDownloadingRef = useRef(false);
   const [node, setNode] = useState<HTMLElement | null>(null);
   const [isDownloading, setDownloading] = useState(false);
+
+  useEffect(() => {
+    createUrlChangeListener(({ pathname }) => {
+      if (isDownloadingRef.current) return;
+      pathnameRef.current = pathname;
+    });
+  }, []);
 
   useEffect(() => {
     const handleClickDocument = () => {
@@ -14,6 +26,7 @@ export default function App() {
         clearTimeout(timeoutRef.current);
       }
       timeoutRef.current = setTimeout(() => {
+        if (!ALLOWED_DOWNLOAD_PATHNAMES.includes(pathnameRef.current)) return;
         const node = document.querySelector('.page-footer .bulk-toolbar-section._options');
         setNode(node as HTMLElement);
       }, 500); // Debounce for 500ms
@@ -28,14 +41,16 @@ export default function App() {
 
   const handleClickDownload = async () => {
     setDownloading(true);
+    isDownloadingRef.current = true;
 
     // get the urls
-    const selectedInvoices = getInvoiceDownloadUrls();
-    if (selectedInvoices.length) {
-      await downloadPdfs(selectedInvoices);
+    const selectedItems = getDownloadUrls(pathnameRef.current);
+    if (selectedItems.length) {
+      await downloadPdfs(selectedItems);
     }
 
     setDownloading(false);
+    isDownloadingRef.current = false;
   };
 
   if (!node) return null;
