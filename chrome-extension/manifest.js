@@ -47,15 +47,15 @@ const manifest = withSidePanel({
   description: '__MSG_extensionDescription__',
   host_permissions: ALLOWED_HOSTS,
   permissions: ['storage', 'scripting', 'tabs', 'notifications'],
-  options_page: 'options/index.html',
+  // options_page: 'options/index.html',
   // background: {
   //   service_worker: 'background.iife.js',
   //   type: 'module',
   // },
-  // action: {
-  //   default_popup: 'popup/index.html',
-  //   default_icon: 'icon-34.png',
-  // },
+  action: {
+    default_popup: 'popup/index.html',
+    default_icon: 'icon-34.png',
+  },
   // chrome_url_overrides: {
   //   newtab: 'new-tab/index.html',
   // },
