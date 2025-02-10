@@ -46,7 +46,7 @@ const manifest = withSidePanel({
   version: packageJson.version,
   description: '__MSG_extensionDescription__',
   host_permissions: ALLOWED_HOSTS,
-  permissions: ['storage', 'scripting', 'tabs', 'notifications'],
+  permissions: ['scripting', 'tabs'],
   // options_page: 'options/index.html',
   // background: {
   //   service_worker: 'background.iife.js',
@@ -80,7 +80,7 @@ const manifest = withSidePanel({
   web_accessible_resources: [
     {
       resources: ['*.js', '*.css', '*.svg', 'icon-128.png', 'icon-34.png'],
-      matches: ['*://*/*'],
+      matches: ALLOWED_HOSTS,
     },
   ],
 });
