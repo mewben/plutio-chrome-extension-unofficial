@@ -1,7 +1,7 @@
 import fs from 'node:fs';
 import deepmerge from 'deepmerge';
 
-const ALLOWED_HOSTS = ['https://*.plutio.com/*'];
+const ALLOWED_HOSTS = ['https://*.plutio.com/*', 'https://portal.aaronhaehner.com/*'];
 
 const packageJson = JSON.parse(fs.readFileSync('../package.json', 'utf8'));
 
