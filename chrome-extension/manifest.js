@@ -46,7 +46,7 @@ const manifest = withSidePanel({
   version: packageJson.version,
   description: '__MSG_extensionDescription__',
   host_permissions: ALLOWED_HOSTS,
-  permissions: ['tabs'],
+  permissions: [],
   // options_page: 'options/index.html',
   // background: {
   //   service_worker: 'background.iife.js',
