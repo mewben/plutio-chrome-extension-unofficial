@@ -5,7 +5,7 @@ import { getDownloadUrls } from './utils/get-download-urls';
 import { downloadFile } from './utils/download-file';
 import type { DownloadItem } from './types';
 
-const ALLOWED_DOWNLOAD_PATHNAMES = ['/financials/invoices', '/proposals', '/contracts'];
+const ALLOWED_DOWNLOAD_PATHNAMES = ['/invoices', '/proposals', '/contracts'];
 
 export default function App() {
   const timeoutRef = useRef<number | null>(null);
@@ -29,7 +29,8 @@ export default function App() {
         clearTimeout(timeoutRef.current);
       }
       timeoutRef.current = setTimeout(() => {
-        if (!ALLOWED_DOWNLOAD_PATHNAMES.includes(pathnameRef.current)) return;
+        if (!ALLOWED_DOWNLOAD_PATHNAMES.some(path => pathnameRef.current.includes(path))) return;
+        // if (!ALLOWED_DOWNLOAD_PATHNAMES.includes(pathnameRef.current)) return;
         const node = document.querySelector('.page-footer .bulk-toolbar-section._options');
         setNode(node as HTMLElement);
       }, 500); // Debounce for 500ms
@@ -43,7 +44,7 @@ export default function App() {
   }, []);
 
   const handleClickDownload = async () => {
-    setDownloaded(0);
+    setDownloaded(0.1);
     isDownloadingRef.current = true;
 
     // get the urls
